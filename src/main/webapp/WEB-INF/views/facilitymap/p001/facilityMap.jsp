@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>카테고리별 장소 검색하기</title>
+<title>DingPet_시설지도</title>
 <style>
 .map_wrap, .map_wrap * {
 	margin: 0;
@@ -173,7 +173,9 @@
 </style>
 <%@ include file="/WEB-INF/views/includes/header.jsp"%>
 </head>
+
 <body>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<section class="site-blocks-cover overflow-hidden bg-light">
 		<div class="container">
 			<div class="row">
@@ -208,11 +210,8 @@
 			</div>
 		</div>
 	</section>
-	<script type="text/javascript"
-		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78d603c9ceea19aeba68479415b917d4&libraries=services"></script>
-	<script
-		src="${pageContext.request.contextPath}/resources/js/facilitymap.js"
-		type="text/javascript"></script>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78d603c9ceea19aeba68479415b917d4&libraries=services"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/facilitymap.js" type="text/javascript"></script>
 </body>
 <%@ include file="/WEB-INF/views/includes/footer.jsp"%>
 </html>
