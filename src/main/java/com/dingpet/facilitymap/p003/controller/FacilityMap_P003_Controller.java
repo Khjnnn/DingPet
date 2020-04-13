@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 
 public interface FacilityMap_P003_Controller {
 
-	public void test(Model model);
-	public void facilityinfo(Model model);
+	
 	
 }
