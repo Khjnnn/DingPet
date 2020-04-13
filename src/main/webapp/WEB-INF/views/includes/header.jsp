@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!doctype html>
-<html lang=ko">
+<html lang="ko">
   <head>
     <title>DingPet.</title>
     <meta charset="utf-8">
@@ -80,7 +80,7 @@
                 <li class="has-children">
                   <a href="#trainers-section" class="nav-link">펫시터</a>
                   <ul class="dropdown">
-                    <li><a href="/petsitting/p001/profilelist_f" class="nav-link">펫시터 소개_f</a></li>
+                    <li><a href="${pageContext.request.contextPath}/petsitting/p001/profilelist" class="nav-link">펫시터 소개</a></li>
                     <li><a href="#" class="nav-link">예약 바로가기</a></li>
                     <li class="has-children">
                       <a href="#">More Links</a>
@@ -96,8 +96,10 @@
                   <a href="#services-section" class="nav-link">동반시설지도</a>
                   <ul class="dropdown">
                     <li><a href="/facilitymap/p001/facilityMap" class="nav-link">시설지도</a></li>
-                    <li><a href="/facilitymap/p003/facilityregister_f" class="nav-link">시설지도 등록_f</a></li>
-                    <li><a href="/facilitymap/p003/facilityinfo_f" class="nav-link">시설지도 보기_f</a></li>
+                    <li><a href="/facilitymap/p003/facilityregister" class="nav-link">시설지도 등록_f</a></li>
+                    <li><a href="/facilitymap/p003/facilityinfo" class="nav-link">시설지도 보기_f</a></li>
+                    <li><a href="/facilitymap/p003/register" class="nav-link">시설test</a></li>
+                    <li><a href="/facilitymap/p003/infopage" class="nav-link">시설인포test</a></li>
                     <li class="has-children">
                       <a href="#">More Links</a>
                       <ul class="dropdown">

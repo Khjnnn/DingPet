@@ -3,13 +3,29 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dingpet.petsitting.p001.mapper.PetSitting_P001_Mapper">
+
+	<select id="profileGetList" resultType="com.dingpet.petsitting.p001.vo.PetSitting_P001_VO">
+		select member_id, profile_picpath, profile_content, list_address, profile_picpath 
+		from sitter_profile 
+	</select>
+	
+	<select id="profileLookup" resultType="com.dingpet.petsitting.p001.vo.PetSitting_P001_VO">
+		select member_id, profile_picpath, profile_content, price_small, 
+		price_medium, price_large, list_address 
+		from sitter_profile 
+		where member_id = #{member_ID}
+	</select>
 	
 	<insert id="profileInsert">
 		insert into sitter_profile (member_id, profile_picpath, profile_content, 
 		price_small, price_medium, price_large, profile_roadaddress, 
-		profile_jibunaddress, profile_detailaddress) 
+		profile_jibunaddress, profile_detailaddress, list_address, 
+		service_00, service_01, service_02, service_03, 
+		service_04, service_05, service_06, service_07) 
 		values(#{member_ID}, #{profile_PicPath}, #{profile_Content}, #{price_Small}, #{price_Medium}, #{price_Large}, 
-		#{profile_RoadAddress}, #{profile_JibunAddress}, #{profile_DetailAddress})
+		#{profile_RoadAddress}, #{profile_JibunAddress}, #{profile_DetailAddress}, #{list_Address}, 
+		#{petService[0]}, #{petService[1]}, #{petService[2]}, #{petService[3]}, 
+		#{petService[4]}, #{petService[5]}, #{petService[6]}, #{petService[7]})
 	</insert>
 	
 	<insert id="licenseInsert">

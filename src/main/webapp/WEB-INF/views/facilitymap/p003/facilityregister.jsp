@@ -1,14 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" isELIgnored="false"%>
-<!DOCTYPE html>
-<%@ include file="/WEB-INF/views/includes/header.jsp"%>
+    pageEncoding="UTF-8"%>
+<%@include file="../../includes/header.jsp"%>
 
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
     <!--====  str of contents  ====-->
     <section style="padding-top:87px">
         <div class="page-header header-filter" data-parallax="true" style="background-image: url('/resources/images/background/homepage-top.png'); transform: translate3d(0px, 0px, 0px);"></div>
@@ -119,6 +112,5 @@
         </div>
       </section>
     <!--====  end of contents  ====-->
-</body>
-<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
-</html>
+
+<%@include file="../../includes/footer.jsp"%>
