@@ -195,8 +195,8 @@
 						<ul id="category">
 							<li id="HP9" data-order="0"><span class="category_bg pharmacy"></span>
 							병원</li>
-							<li id="MT1" data-order="1"><span class="category_bg mart"></span>
-							마트</li>
+							<li id="HP2" data-order="1"><span class="category_bg pharmacy"></span>
+							약국</li>
 							<li id="PM9" data-order="2"><span class="category_bg pharmacy"></span>
 							약국</li>
 							<li id="OL7" data-order="3"><span class="category_bg oil"></span>
@@ -213,7 +213,7 @@
 		</div>
 	</section>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78d603c9ceea19aeba68479415b917d4&libraries=services"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/facilitymap.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/facilitymap.js?v=<%=System.currentTimeMillis() %>" type="text/javascript"></script>
 </body>
 <%@ include file="/WEB-INF/views/includes/footer.jsp"%>
 </html>
