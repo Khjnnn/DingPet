@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dingpet.facilitymap.p001.dto.PlaceDTO;
 import com.dingpet.facilitymap.p001.service.FacilityMap_P001_Service;
@@ -85,11 +86,25 @@ public class FacilityMap_P001_ControllerImpl implements FacilityMap_P001_Control
 		return new ResponseEntity<>(data, HttpStatus.OK);	
 	} // mediMap End
 	
-	@RequestMapping("/register")
+	@RequestMapping(value="/register", method = {RequestMethod.GET})
 	public void test(Model model) {
 		
 		model.addAttribute("register", "등록 페이지 입니다");
 	}
+	
+	@RequestMapping(value="/register", method = {RequestMethod.POST})
+	public String registerAction(FacilityMap_P001_VO vo, RedirectAttributes rttr) {
+		log.info("========register 등록중====");
+		log.info("register: " + vo);
+
+		log.info("==========================");
+		service.register(vo);
+
+		rttr.addFlashAttribute("result", vo.getSite_num());
+
+		return "redirect:/";
+	}
+	
 	@RequestMapping("/infopage")
 	public void facilityinfo(@RequestParam("place_num") int place_num, Model model) {
 		System.out.println("1111111111111111111111111111111111111111111111111111111111111111111");
