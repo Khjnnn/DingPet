@@ -39,7 +39,7 @@ public class PetSitting_P001_ControllerImpl implements PetSitting_P001_Controlle
 	@Override
 	public void profilelist(Model model) {
 		// TODO Auto-generated method stub
-				
+		System.out.println("제발 오니?");
 		model.addAttribute("list", service.profileGetList());
 
 	}
@@ -64,7 +64,7 @@ public class PetSitting_P001_ControllerImpl implements PetSitting_P001_Controlle
 		
 		try {
 
-//--------------------------- 이용 가능 서비스	 --------------------------
+//------------------------------ 이용 가능 서비스	 -------------------------------
 	
 			String[] petServiceYN = new String[8];
 
@@ -79,7 +79,7 @@ public class PetSitting_P001_ControllerImpl implements PetSitting_P001_Controlle
 			profile.setPetService(petServiceYN);
 			
 			//service.petServiceInsert(profile);
-//--------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 //---------------------------	사진 업로드 데이터 처리	---------------------------
 			
@@ -161,7 +161,7 @@ public class PetSitting_P001_ControllerImpl implements PetSitting_P001_Controlle
 		
 //---------------------------------------------------------------------------
 	
-		return "/petsitting/p001/sitterlist";
+		return "/petsitting/p001/profilelist";
 	}	
 	
 	
@@ -178,37 +178,16 @@ public class PetSitting_P001_ControllerImpl implements PetSitting_P001_Controlle
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@RequestMapping("/profilelookup_f")
-	@Override
-	public void profilelookup_f() {
-		// TODO Auto-generated method stub
-		
-	}
+
 	//===샘플 시작 ===
 	@RequestMapping("/profilelookup")
 	@Override
 	public void lookup(Model model, PetSitting_P001_VO profile) {
-		// TODO Auto-generated method stub
-		System.out.println(service.profileLookup(profile));		
-		
+		// TODO Auto-generated method stub		
 		model.addAttribute("profile", service.profileLookup(profile));		
 		model.addAttribute("closed", service.getClosedList(profile));
 		model.addAttribute("license", service.getLicenseList(profile));
 	}
 	
-	@RequestMapping("/profileregister_f")
-	@Override
-	public void profileregister_f() {
-		// TODO Auto-generated method stub
-		
-	}
 	
-	@RequestMapping("/profilelist_f")
-	@Override
-	public void profilelist_f() {
-		// TODO Auto-generated method stub
-		
-	}
-	//===샘플 페이지 끝 ===
 }
