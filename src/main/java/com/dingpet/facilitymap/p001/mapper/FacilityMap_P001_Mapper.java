@@ -24,4 +24,5 @@ public interface FacilityMap_P001_Mapper {
 	public void registerPlace(FacilityMap_P001_VO vo);
 	//시설 리뷰 등록 
 	public void reviewRegister(FacilityMap_P001_ReplyVO vo);
+	
 }

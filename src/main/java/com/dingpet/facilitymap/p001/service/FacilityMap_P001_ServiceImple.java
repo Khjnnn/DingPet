@@ -86,7 +86,6 @@ public class FacilityMap_P001_ServiceImple implements FacilityMap_P001_Service {
 			attachMapper.insert(attach);
 		});
 	}
-	
 	@Transactional
 	@Override
 	public void reviewregister(FacilityMap_P001_ReplyVO vo) {
@@ -95,9 +94,8 @@ public class FacilityMap_P001_ServiceImple implements FacilityMap_P001_Service {
 		int sitesq = vo.getSite_id();
 		log.info(sitesq);		
 		// -------===============--------------
-		mapper.reviewRegister(vo);
 		log.info("DB Insert End...:"+vo);
-
+		mapper.reviewRegister(vo);
 	}
 	
 	@Override

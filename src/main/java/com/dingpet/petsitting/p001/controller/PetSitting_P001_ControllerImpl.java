@@ -76,6 +76,7 @@ public class PetSitting_P001_ControllerImpl implements PetSitting_P001_Controlle
 				}
 			}
 			
+			
 			profile.setPetService(petServiceYN);
 			
 			//service.petServiceInsert(profile);
@@ -83,14 +84,14 @@ public class PetSitting_P001_ControllerImpl implements PetSitting_P001_Controlle
 
 //---------------------------	사진 업로드 데이터 처리	---------------------------
 			
-			String uploadFolder = "/home/testpic";
+			String uploadFolder = "/var/lib/tomcat8/webapps/img";
 			//String uploadFolder = "C:\\test\\pic";
 			
 			
 			String fileName = "";
 			
 			Iterator<String> files = uploadFile.getFileNames();
-			
+
 			while(files.hasNext()) {
 				
 				File saveFile;
