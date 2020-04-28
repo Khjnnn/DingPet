@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingpet.chat.p001.mapper.C002ChatMapper">
+	<select id="getChatroomList" resultType="com.dingpet.chat.p001.vo.C002ChatroomVO">
+		<![CDATA[
+		SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="getMyClassList" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="getclassFriendList" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="getseq" resultType="String">
+		SELECT * FROM MESSEGE
+	</select> 
+    <select id="getstaravg" resultType="String">
+	   	SELECT * FROM MESSEGE
+    </select> 
+	<select id="getTeaList" resultType="String">		
+		<![CDATA[
+			SELECT * FROM MESSEGE	
+		]]>	
+	</select>
+	<!-- 댓글 쓰기 -->
+	<select id="getTeaClassList" resultType="String">		
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="getclassStuList" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="getmemInfo" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="getchatroomId" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="insertChatroom" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="insertMemberChat" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="getmakeMember" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="getChatroomInfo" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="getmychatIdList" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="insertMsg" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="getpastMsg" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="updateChatroomName" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	<select id="deleteMemberChat" resultType="String">
+		<![CDATA[
+			SELECT * FROM MESSEGE
+		]]>	
+	</select>
+	
+</mapper>
