@@ -37,7 +37,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 	//클라이언트가 연결 되었을 때 실행
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        logger.info(session.getId() + " 연결 됨");     
+    	logger.info(session.getId() + " 연결 됨");     
         users.put(session.getId(), session);   
     }
     

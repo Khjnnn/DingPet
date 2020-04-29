@@ -147,8 +147,7 @@
 
 <link href='${contextPath}/resources/css/rice_chatcss.css' rel='stylesheet' />
 
-
-<script src="${contextPath}/resources/js/sockjs-0.3.4.js"></script>
+<script src="${contextPath}/resources/js/moment.min.js"></script>
 <script src="${contextPath}/resources/js/rice_chatjs.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {	

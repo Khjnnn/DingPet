@@ -121,6 +121,7 @@
 	</div>
 </section>
 </body>
+<script src="${contextPath}/resources/js/sockjs-0.3.4.js"></script>
 <script type="text/javascript">
 	
 
@@ -128,7 +129,7 @@
 //	var webSocket = new WebSocket('ws://ec2-13-125-250-66.ap-northeast-2.compute.amazonaws.com:8080/DevEricServers/webChatServer');
 	
 	// 로컬에서 테스트할 때 사용하는 URL입니다.
- 	var webSocket = new WebSocket('ws://localhost:8080/webChatServer');
+ 	var webSocket = new SockJS("/echo");
 	var inputMessage = document.getElementById('inputMessage');
 	
 	webSocket.onerror = function(e){

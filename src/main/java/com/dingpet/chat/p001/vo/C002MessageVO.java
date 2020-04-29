@@ -9,12 +9,17 @@ public class C002MessageVO {
 	    memNum    VARCHAR2(20) NOT NULL,	// 채팅참여자 일련변호
 	    chatroomId    VARCHAR2(20) NOT NULL	// 채팅방 ID
 	 */
-	
+	String message_id;
 	String msgDatetime;
 	String msgText;
 	String memNum;
 	String chatroomId;
-	
+	public String getMessage_id() {
+		return message_id;
+	}
+	public void setMessage_id(String message_id) {
+		this.message_id = message_id;
+	}
 	public String getMsgDatetime() {
 		return msgDatetime;
 	}

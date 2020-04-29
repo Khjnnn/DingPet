@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="getclassFriendList" resultType="String">
 		<![CDATA[
-			SELECT * FROM MESSEGE
+			SELECT MEMBER_ID FROM MEMBER
 		]]>	
 	</select>
 	<select id="getseq" resultType="String">
@@ -42,22 +42,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="getmemInfo" resultType="String">
 		<![CDATA[
-			SELECT * FROM MESSEGE
+			SELECT * FROM MEMBER
 		]]>	
 	</select>
 	<select id="getchatroomId" resultType="String">
 		<![CDATA[
-			SELECT * FROM MESSEGE
+			select chatroom_seq.nextval from chatroom;
 		]]>	
 	</select>
 	<select id="insertChatroom" resultType="String">
 		<![CDATA[
-			SELECT * FROM MESSEGE
+			insert into CHATROOM values (chatroom_seq.currval, "11", "111", "111")
 		]]>	
 	</select>
 	<select id="insertMemberChat" resultType="String">
 		<![CDATA[
-			SELECT * FROM MESSEGE
+			insert into chatmember values (chatroom_seq.currval, "111")
 		]]>	
 	</select>
 	<select id="getmakeMember" resultType="String">
@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="getChatroomInfo" resultType="String">
 		<![CDATA[
-			SELECT * FROM MESSEGE
+			SELECT * FROM CHATROOM
 		]]>	
 	</select>
 	<select id="getmychatIdList" resultType="String">

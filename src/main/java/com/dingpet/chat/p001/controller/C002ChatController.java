@@ -40,6 +40,12 @@ public class C002ChatController {
 		log.info("get /chat");	
 	}
 	
+	@RequestMapping(value= "/chatpage", method = RequestMethod.GET)
+	public String Chatpage(Model model) {
+		log.info("get /chat");	
+		return "chatpage";
+	}
+	
 	@RequestMapping(value = "/getChatroomList", method = {RequestMethod.GET, RequestMethod.POST}, produces="application/json; charset=utf8")
 	@ResponseBody
 	// 채팅방 목록 가져오기
@@ -60,23 +66,7 @@ public class C002ChatController {
 		List<Map<String, Object>> tmp = null;
 		List<String> classList = null;
 		
-		if(info.get("authId").equals("1001")) {	// 학생일 경우
-			classList = c002ChatService.getMyClassList(info);
-			if (classList.isEmpty()) {
-				return resultMap;
-			}
-			info.put("classList", classList);
-			resultMap = c002ChatService.getclassFriendList(info);
-			tmp = c002ChatService.getTeaList(info);
-			resultMap.addAll(tmp);
-		} else if(info.get("authId").equals("1002")) { // 강사일 경우
-			classList = c002ChatService.getTeaClassList(info);
-			if (classList.isEmpty()) {
-				return resultMap;
-			}
-			info.put("classList", classList);
-			resultMap = c002ChatService.getclassStuList(info);
-		}
+		resultMap = c002ChatService.getclassFriendList(info);
 
 		return resultMap;
 	}
