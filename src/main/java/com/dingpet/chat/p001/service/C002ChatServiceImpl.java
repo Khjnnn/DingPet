@@ -42,7 +42,7 @@ public class C002ChatServiceImpl implements C002ChatService {
 	}
 	// 친구 목록 불러오기 // 같은 수업을 듣는 학생 
 	@Override
-	public List<Map<String, Object>> getclassFriendList(Map info) {
+	public List<Map<String, Object>> getclassFriendList(String info) {
 		return mapper.getclassFriendList(info);
 	}
 	// 내가 듣는 수업의 강사 목록 가져오기

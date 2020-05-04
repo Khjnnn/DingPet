@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
 <%@include file="./includes/header.jsp"%>
@@ -8,6 +9,9 @@
 <meta charset="UTF-8">
 <title>Chat Page</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="${contextPath}/sockjs/sockjs.min.js"></script>
+<script src="${contextPath}/js/socketchat.js"></script>
 <style type="text/css">
 	*{
 		font-family: 나눔고딕;
@@ -104,9 +108,30 @@
 </style>
 </head>
 <body>
+<script type="text/javascript">
 
+</script>
 <section class="site-blocks-cover overflow-hidden bg-light">
       <div class="container">
+      <div class="col-md-3">
+				<div class="box box-warning">
+					<div class="box-header with-border">
+						<h3 class="box-title">친구 목록</h3>
+					</div>
+					<!-- /.box-header -->
+
+					<div class="box-body">
+						<ul class="tree" data-widget="tree" id='friendList'>
+					        
+					    </ul>
+					</div>
+					
+					<div class="box-footer">
+			          <button class="btn btn-block btn-warning" id="btn_makeChat">채팅방 만들기</button>
+			        </div>
+			        <!-- /.box-footer -->
+
+				</div>
          <div class="row">
           	<div class="col-md-7 align-self-center text-center text-md-left">
 				<div id="chat-container">
@@ -115,87 +140,14 @@
 				<div id="bottom-container">
 					<input id="inputMessage" type="text">
 					<input id="btn-submit" type="submit" value="전송" >
+					<input type="button" id="enterBtn" value="입장">
+					<input type="button" id="exitBtn" value="나가기">
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
 </body>
-<script src="${contextPath}/resources/js/sockjs-0.3.4.js"></script>
-<script type="text/javascript">
 	
-
-	var textarea = document.getElementById("messageWindow");
-//	var webSocket = new WebSocket('ws://ec2-13-125-250-66.ap-northeast-2.compute.amazonaws.com:8080/DevEricServers/webChatServer');
-	
-	// 로컬에서 테스트할 때 사용하는 URL입니다.
- 	var webSocket = new SockJS("/echo");
-	var inputMessage = document.getElementById('inputMessage');
-	
-	webSocket.onerror = function(e){
-		onError(e);
-	};
-	webSocket.onopen = function(e){
-		onOpen(e);
-	};
-	webSocket.onmessage = function(e){
-		onMessage(e);
-	};
-	
-	
-	function onMessage(e){
-		var chatMsg = event.data;
-		var date = new Date();
-		var dateInfo = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-		if(chatMsg.substring(0,6) == 'server'){
-			var $chat = $("<div class='chat notice'>" + chatMsg + "</div>");
-			$('#chat-container').append($chat);
-		}else{
-			var $chat = $("<div class='chat-box'><div class='chat'>" + chatMsg + "</div><div class='chat-info chat-box'>"+ dateInfo +"</div></div>");
-			$('#chat-container').append($chat);
-		}
-		
-		
-		$('#chat-container').scrollTop($('#chat-container')[0].scrollHeight+20);
-	}
-	
-	function onOpen(e){
-		
-	}
-	
-	function onError(e){
-		alert(e.data);
-	}
-	
-	function send(){
-		var chatMsg = inputMessage.value;
-		if(chatMsg == ''){
-			return;
-		}
-		var date = new Date();
-		var dateInfo = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-		var $chat = $("<div class='my-chat-box'><div class='chat my-chat'>" + chatMsg + "</div><div class='chat-info'>"+ dateInfo +"</div></div>");
-		$('#chat-container').append($chat);
-		webSocket.send(chatMsg);
-		inputMessage.value = "";
-		$('#chat-container').scrollTop($('#chat-container')[0].scrollHeight+20);
-	}
-	
-</script>
-
-<script type="text/javascript">
-	$(function(){
-		$('#inputMessage').keydown(function(key){
-			if(key.keyCode == 13){
-				$('#inputMessage').focus();
-				send();
-			}
-		});
-		$('#btn-submit').click(function(){
-			send();
-		});
-		
-	})
-</script>
 <%@include file="./includes/footer.jsp"%>
 </html>

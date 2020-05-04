@@ -29,13 +29,13 @@ import lombok.extern.log4j.Log4j;
 
 @Log4j
 @Controller
-@RequestMapping("/chat/*")
+@RequestMapping("/chats/*")
 public class C002ChatController {
 	
 	@Autowired
 	private C002ChatService c002ChatService;
 	
-	@RequestMapping(value= "/Chathome", method = RequestMethod.GET)
+	@RequestMapping(value= "/chathome", method = RequestMethod.GET)
 	public void Chathome(Model model) {
 		log.info("get /chat");	
 	}
@@ -60,7 +60,7 @@ public class C002ChatController {
 	// 친구목록 가져오기
 	@RequestMapping(value = "/getFriendList", method = {RequestMethod.GET, RequestMethod.POST}, produces="application/json; charset=utf8")
 	@ResponseBody
-	public List getFriendList(@RequestBody Map<String, Object> info, HttpServletRequest request, HttpServletResponse response) throws DataAccessException {
+	public List getFriendList(@RequestBody String info, HttpServletRequest request, HttpServletResponse response) throws DataAccessException {
 		log.info("get/post /getFriendList");
 		List<Map<String, Object>> resultMap = null;
 		List<Map<String, Object>> tmp = null;

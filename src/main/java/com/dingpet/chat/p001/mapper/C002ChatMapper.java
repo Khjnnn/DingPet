@@ -15,7 +15,7 @@ public interface C002ChatMapper {
 	// 내가 신청한 수업 ID 목록 가져오기 
 	public List<String> getMyClassList(Map info);
 	// 친구 목록 불러오기 // 같은 수업을 듣는 학생 
-	public List<Map<String, Object>> getclassFriendList(Map info);
+	public List<Map<String, Object>> getclassFriendList(String info);
 	// 내가 듣는 수업의 강사 목록 가져오기
 	public List<Map<String, Object>> getTeaList(Map info);
 	// 강사일 경우
