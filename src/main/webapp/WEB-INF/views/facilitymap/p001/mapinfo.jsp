@@ -118,15 +118,15 @@ background:url(${pageContext.request.contextPath}/resources/images/ministar.png)
                                         	<div class="wrap-star">
 										   		<div class='star-rating'>
 										   		<c:set var="starper" value="${star*20}%" />
-							    		   		<span style ="width:${star*20}%"></span>
+							    		   		<span style ="width:${star*20}%"> </span>
 							    				</div>        
 							    			<span style="position: right; margin: 0px;">${star}/5</span>	
                                              </div>
                                              
                                          <br><br>
                                          <div>                                         
-                                            <span class="listing-rating-count listing-rating-count--single">
-                                            <a href="#respond">0개의 리뷰</a>	</span>
+                                            <span class="listing-rating-count listing-rating-count--single" id="recount">
+                                            </span>
                                         </div>
                                         <div class="job_listing-location job_listing-location-none">${info.address_name }</div>
                                         <div class="job_listing-location job_listing-location-none">${info.phone }</div>
@@ -205,6 +205,7 @@ background:url(${pageContext.request.contextPath}/resources/images/ministar.png)
                            <!--  <small><a rel="nofollow" id="cancel-comment-reply-link" href="/map/listing/%ec%88%98%ec%9b%90%ec%8b%9c-%ec%98%81%ed%86%b5%ea%b5%ac-%eb%b2%95%ec%a1%b0%eb%a1%9c149%eb%b2%88%ea%b8%b8-47-1%ec%b8%b5-94-149%ed%94%8c%eb%9d%bc%eb%b0%8d%ea%b3%a0/#respond" style="display:none;">댓글 취소</a></small></h3> -->
                             <form role="form" action="/facilitymap/p001/revregister" method="post" enctype="multipart/form-data">
                             <input type="hidden" class="form-control" name="site_id" value="${info.site_id }">
+                            <input type="hidden" class="form-control" name="member_id" value="${customers.member_id }">
                             <input type="hidden" id="hiddendate"class="form-control" name="review_date" value="">                            
                                 <div id="wpjmr-submit-ratings">
                                 	<h2 class="widget-title widget-title__job_listing ion-ios-compose-outline">별점주기</h2>
@@ -239,16 +240,9 @@ background:url(${pageContext.request.contextPath}/resources/images/ministar.png)
                                 
                                 <p class="comment-form-comment pt-3">
                                     <label for="comment">리뷰</label> 
-                                    <textarea id="review_content" name="review_content" cols="45" rows="8"  class="form-control" maxlength="255" required="required" placeholder="내용을 입력 해주세요.(최대 250자)"></textarea>
+                                    <textarea id="review_content" name="review_content" cols="45" rows="8"  class="form-control" maxlength="255" required="required" placeholder = "리뷰를 쓰려면 먼저 로그인 해주세요!" disabled></textarea>
                                 </p>
-                                <p class="comment-form-author">
-                                    <label for="author">이름 <span class="required">*</span></label> 
-                                    <input id="review_name" name="review_name" type="text"  class="form-control" value="" size="30" maxlength="245" required="required">
-                                </p>
-                                <p class="comment-form-email">
-                                    <label for="email">이메일 <span class="required">*</span></label> 
-                                    <input id="review_email" name="review_email" type="email"  class="form-control" value="" size="30" maxlength="100" required="required">
-                                </p>
+                                <input id="review_name" name="review_name" type="hidden"  class="form-control" value="${customers.member_nickname }" size="30" maxlength="245" >
                                 <p class="form-submit float-right">
                                     <input name="submit" type="submit" id="submit" class="btn btn-primary btn-sm" value="리뷰등록"> 
                                     
@@ -261,13 +255,17 @@ background:url(${pageContext.request.contextPath}/resources/images/ministar.png)
         </div>
       </section>
     <!--====  end of contents  ====-->  
-console.log(${info.site_date});
-console.log(${info.place_name});
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <!-- 댓글 ajax 처리 -->
 <script type = "text/javascript" src = "/resources/js/facilityMapReply.js?v=2"></script>
 <script type = "text/javascript">
 $(document).ready(function() {
+	var loggedInId = '${customers.member_id}';
+		
+	if(loggedInId){
+		$("#review_content").attr("placeholder", "안녕하세요, " + loggedInId + " 님! 리뷰를 남겨 회원들과 소통해보세요!(최대 250자)");
+		$("#review_content").removeAttr("disabled");
+	}
 	$('#review_content').on('keyup', function() {
 	if($(this).val().length > 250) {
 		$(this).val($(this).val().substring(0, 250));
@@ -299,49 +297,52 @@ function leadingZeros(n, digits) {
   return zero + n;
 }
 document.getElementById('hiddendate').value = getTimeStamp();
-	//날짜 포맷 변경
-	var boardDate = "202004231617";
-	var dateString = boardDate.toString();
-	$("#board_date").html("<small>" + replyService.formatDate(dateString) + "</small>");
+//날짜 포맷 변경
+var boardDate = "202004231617";
+var dateString = boardDate.toString();
+$("#board_date").html("<small>" + replyService.formatDate(dateString) + "</small>");
 		
-	//댓글 목록 표시
-	var site_idValue = '<c:out value = "${info.site_id}"/>';
-	var replyUL = $("#comments");
-				
-	showList(1);
+//댓글 목록 표시
+var site_idValue = '<c:out value = "${info.site_id}"/>';
+var replyUL = $("#comments");
+var recount = $("#recount");
+showList(1);
 						
-	function showList(pageNum){
-			replyService.getList({site_id : site_idValue, pageNum : pageNum || 1},
-			function(replyCnt, list){
-				var str = "";
-
-		        console.log("replyCnt: "+ replyCnt );
-		        console.log("list: " + list);
-		        if(pageNum == -1){
-		          pageNume = Math.ceil(replyCnt/10.0);
-		          showList(pageNume);
-		          return;
-		        }
-				if(list == null || list.length == 0){
-					replyUL.html("아직 작성된 리뷰가 없습니다.");
-					return;
-					}
-				for(var i = 0, length = list.length || 0; i < length; i++){
-					str += "<li class = 'mb-2' data-reply_id ='" + list[i].review_id + "'>";
-					str += "<div><div class = 'reply_info'><span><strong>" + list[i].review_name +"</strong>님</span>";
-					str += "<span><small>" + replyService.formatDate(list[i].review_date) + "</small></span>";
-					str += "<button class = 'small_btn btn btn-primary float-right' id = 'reply_modify'>수정</button><button class = 'small_btn btn btn-primary float-right' id = 'reply_delete'>삭제</button></div>";
-					str += "<div class='wrap-star'>	<div class='star-review'><span style ='width:"+ list[i].review_star*20 + "%'></span></div></div>"
-					str += "<div class='comment-content comment reply_info'>";
-					str += "<p id = 'original_content' class = 'fn ml-3 mr-3'>" + list[i].review_content + "</p>";
-					str += "<div class = 'flex_row toggle_div pb-2' style = 'display : none'><div class = 'w-90'><textarea cols='45' rows='4'  class='form-control' maxlength='65525' required></textarea></div>";
-					str += "<div class = 'flex_column w-10'><button id = 'modified_submit' class = 'small_btn btn btn-primary'>등록</button><button id = 'modified_cancel' class = 'small_btn btn btn-primary'>취소</button>";
-					str += "</div></div></div></div></li>";
-					}
-					replyUL.html(str);
-					showReplyPage(replyCnt);
-			}); //list End
-		}; // showList End
+function showList(pageNum){
+		replyService.getList({site_id : site_idValue, pageNum : pageNum || 1},
+		function(replyCnt, list){
+			var str = "";
+			loggedInId = '${customers.member_id}';
+	        if(pageNum == -1){
+	          pageNume = Math.ceil(replyCnt/10.0);
+	          showList(pageNume);
+	          return;
+	        }
+			if(list == null || list.length == 0){
+				replyUL.html("아직 작성된 리뷰가 없습니다.");
+				return;
+				}
+			for(var i = 0, length = list.length || 0; i < length; i++){
+				str += "<li class = 'mb-2' data-review_id ='" + list[i].review_id + "'>";
+				str += "<div><div class = 'reply_info'><span><strong>" + list[i].review_name +"</strong>님</span>";
+				str += "<span><small>" + replyService.formatDate(list[i].review_date) + "</small></span>";
+				//댓글 작성자에게만 수정 삭제 버튼 표시
+				if(list[i].member_id == loggedInId){
+					str += "<button class = 'small_btn btn btn-primary float-right' id = 'reply_modify'>수정</button>";
+					str += "<button class = 'small_btn btn btn-primary float-right' id = 'reply_delete'>삭제</button>";
+				}
+				str += "<div class='wrap-star'>	<div class='star-review'><span style ='width:"+ list[i].review_star*20 + "%'></span></div></div>"
+				str += "<div class='comment-content comment reply_info'>";
+				str += "<p id = 'original_content' class = 'fn ml-3 mr-3'>" + list[i].review_content + "</p>";
+				str += "<div class = 'flex_row toggle_div pb-2' style = 'display : none'><div class = 'w-90'><textarea cols='45' rows='4'  class='form-control' maxlength='65525' required></textarea></div>";
+				str += "<div class = 'flex_column w-10'><button id = 'modified_submit' class = 'small_btn btn btn-primary'>등록</button><button id = 'modified_cancel' class = 'small_btn btn btn-primary'>취소</button>";
+				str += "</div></div></div></div></li>";
+				}
+				replyUL.html(str);
+				showReplyPage(replyCnt);
+				recount.html("<a href='#respond'> " + replyCnt+" 개의 리뷰 </a>");
+		}); //list End
+	}; // showList End
 		
 		 var pageNum = 1;
 		 var replyPageFooter = $(".panel-footer");
@@ -374,7 +375,6 @@ document.getElementById('hiddendate').value = getTimeStamp();
 		        str+= "<li class='page-item'><a class='page-link' href='"+(endNum + 1)+"'>Next</a></li>";
 		    }		      
 		   str += "</ul></div>";
-		   console.log(str);
 		   replyPageFooter.html(str);
 		   }
 		     
@@ -382,7 +382,6 @@ document.getElementById('hiddendate').value = getTimeStamp();
 		     e.preventDefault();
 		     console.log("page click");
 		     var targetPageNum = $(this).attr("href");		        
-		     console.log("targetPageNum: " + targetPageNum);		        
 		     pageNum = targetPageNum;		        
 		     showList(pageNum);
 		   });     				
@@ -431,12 +430,12 @@ document.getElementById('hiddendate').value = getTimeStamp();
 			var reply = {
 					review_id : review_idValue,
 					site_id : site_idValue,
-					reply : modified_content
+					site_content : modified_content
 					}
-			console.log("reply.reply : " + reply.reply);
-			console.log("reply.reply type : " + typeof(reply.reply));
+			console.log("reply.reply : " + reply.site_content);
+			console.log("reply.reply type : " + typeof(reply.site_id));
 			//내용이 없을 때 체크
-			if(!reply.reply){
+			if(!reply.site_content){
 				alert('내용을 입력해주세요')
 			} else{ //내용이 있으면 modify
 				replyService.modify(reply, function(result){

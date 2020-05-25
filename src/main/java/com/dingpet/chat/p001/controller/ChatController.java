@@ -1,11 +1,13 @@
 package com.dingpet.chat.p001.controller;
 
-import java.security.Principal;
+import java.security.Provider.Service;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,23 +19,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
-import com.dingpet.chat.p001.service.C002ChatService;
 import com.dingpet.chat.p001.service.ChatService;
 import com.dingpet.chat.p001.vo.ChatRoom;
 import com.dingpet.chat.p001.vo.Criteria;
 import com.dingpet.chat.p001.vo.PageMaker;
 import com.dingpet.customers.p001.service.Customers_P001_Service;
+import com.dingpet.customers.p001.vo.Customers_P001_VO;
 
 import lombok.extern.log4j.Log4j;
+//import sun.tools.serialver.resources.serialver;
 
 @Log4j
 @RequestMapping("/chat/*")
 @Controller
 public class ChatController {
 	
-	@Autowired
-	C002ChatService c002ChatService;
+	
 	@Autowired
 	ChatService chatService;
 	@Autowired
@@ -54,27 +57,29 @@ public class ChatController {
 		List<Map<String, Object>> resultMap = null;
 		List<Map<String, Object>> tmp = null;
 		List<String> classList = null;
-			
-		resultMap = c002ChatService.getclassFriendList(info);
+		
 		log.info(resultMap);
 		return resultMap;
 	}
 	@RequestMapping(value = "createRoom", method = RequestMethod.POST) // 방 만들 때
-	public String createRoomPost(ChatRoom room, Criteria cri, Principal princ) throws Exception {
+	public String createRoomPost(ChatRoom room, Criteria cri, HttpServletRequest request, Model model ) throws Exception {
 		logger.info("-------------------------------->>>>>>>>>>>>>>>>>>>>>>>" + room);
-
-		room.setOwner(princ.getName());
-		room.setRoomMember(princ.getName());
-		
+		room.setRoomType(room.getRoomPw() == "" || room.getRoomPw() == null? "Normal" : "Secret");
+		room.setRoomNo(chatService.getChatRoomNo());
+		request.setAttribute("room", room);
+		model.addAttribute("owner", room.getRoom_owner());
 		chatService.createRoom(room); // db에 방 넣어줌
 		// 알아서 페이지값이 들어옴
-		return	"redirect:/chat/enterRoom";
+		
+		return	"redirect:/chat/chatList";
 			
 	}
 	
-	@RequestMapping(value="chatList", method = RequestMethod.GET)
-	public String tempPage(Criteria cri, Model model) throws Exception {
-		
+	@RequestMapping(value="/chatList", method = RequestMethod.GET)
+	public String tempPage(Criteria cri, Model model, HttpSession session) throws Exception {
+		Customers_P001_VO sessionId = (Customers_P001_VO) session.getAttribute("customers");
+		String newOwner = sessionId.getMember_id();
+		System.out.println("세션id는 :"+ newOwner);		
 		PageMaker pagemaker = new PageMaker();
 		int total = chatService.totalRoomNum();
 		
@@ -90,7 +95,7 @@ public class ChatController {
 			pagemaker.setTotalCount(total);
 		}
 		
-		model.addAttribute("roomList", chatService.listChatRoom(cri));
+		model.addAttribute("roomList", chatService.listChatRoom(cri, newOwner));
 		model.addAttribute("pageMaker", pagemaker);
 		
 		return "chat/chatList";
@@ -98,30 +103,43 @@ public class ChatController {
 //	RoomL
 
 
-	@RequestMapping(value = "enterRoom", method =RequestMethod.GET) // 방 들어갈 때, createRoom후에 url 바꾸기 위해 만듦
-	public String chat(Principal princ, Model model, Criteria cri) throws Exception {
+	@RequestMapping(value = "enterRoom", method = {RequestMethod.GET}) // 방 들어갈 때, createRoom후에 url 바꾸기 위해 만듦
+	public String chat(HttpServletRequest request, HttpSession session, Model model, Criteria cri) throws Exception {
 		// 방에 멤버 추가해줌
+		Customers_P001_VO sessionId = (Customers_P001_VO) session.getAttribute("customers");
+		System.out.println("세션id는 : "+sessionId.getMember_id());
 		
-		ChatRoom room2 = chatService.getRoomByOwner(princ.getName());
-		
+		ChatRoom room = (ChatRoom) request.getAttribute("room");
+		ChatRoom room2 = chatService.getRoomByOwner(room);
+		System.out.println("room1: "+room);
+		System.out.println("room2: "+room2);
 		model.addAttribute("room", room2);
 		model.addAttribute("cri", cri);
-		//model.addAttribute("member", userService.getUser(princ.getName()).getUserName());
+		
 		return "chat/room";
 	}
 //	
-	@RequestMapping(value = "enterRoom", method =RequestMethod.POST) // 방 들어갈 때, list에서 pick해서 들어갈 때
-	public String chat(int roomNo, Principal princ,ChatRoom room, Model model
+	@ResponseBody
+	@RequestMapping(value = "enterRoom", method = {RequestMethod.POST}) // 방 들어갈 때, list에서 pick해서 들어갈 때
+	public Map chat(int roomNo, HttpSession session, HttpServletRequest request, ChatRoom room, Model model
 												, Criteria cri) throws Exception {
+		//세션 id 가져오기 
+		Customers_P001_VO sessionId = (Customers_P001_VO) session.getAttribute("customers");
+		System.out.println("세션 아이디 "+sessionId);
 		// 방에 멤버 추가해줌
-		System.out.println(roomNo +""+ room + "---- -------");
 		
-		chatService.addMember(roomNo, princ.getName());
+		System.out.println(roomNo +"```"+ room + "---- -------");
+		System.out.println("id는 " + sessionId.getMember_id());
+		chatService.addMember(roomNo, sessionId.getMember_id());
 		model.addAttribute("cri", cri);
 		model.addAttribute("room", chatService.getRoom(roomNo));
-		//model.addAttribute("member", userService.getUser(princ.getName()).getUserName());
+		model.addAttribute("msgList",chatService.getMessage(roomNo));
 
-		return "chat/room";
+		Map map = new HashMap();
+		map.put("room2", chatService.getRoom(roomNo));
+		map.put("chatList", chatService.getMessage(roomNo));		
+		//return "chat/room";
+		return map;
 	}
 	
 }

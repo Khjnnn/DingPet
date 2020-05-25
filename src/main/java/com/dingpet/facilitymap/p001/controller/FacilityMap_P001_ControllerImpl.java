@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,6 +44,7 @@ public class FacilityMap_P001_ControllerImpl implements FacilityMap_P001_Control
 	}
 	
 	// 시설지도 페이지
+	@Override
 	@RequestMapping(value="/facilityMap", method = {RequestMethod.GET})
 	public void facilityMap(Model model) {
 		
@@ -119,8 +119,52 @@ public class FacilityMap_P001_ControllerImpl implements FacilityMap_P001_Control
 		log.info("====End Map Method====");
 		return new ResponseEntity<>(data, HttpStatus.OK);	
 	} // CafeMap End
-	
+	// 시설지도 - 식당 마킹
+	@RequestMapping(value="/restaurantMap", method = {RequestMethod.GET})
+	@ResponseBody
+	@Override
+	public ResponseEntity<List<FacilityMap_P001_VO>> RestaurantMap(PlaceDTO dto) {
+		HttpHeaders responseHeaders = new HttpHeaders(); // 헤더변경 시 사용
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8"); 
+		log.info("====Restaurant Map Method====");
+		List<FacilityMap_P001_VO> data = service.getRestaurantMap(dto);
+		log.info(dto);
+		log.info(service);
+		String msg = "";
+		boolean status = data.isEmpty();
+		if (status) {
+			msg = "fail";
+		} else {
+			msg = "success";
+		}
+		log.info(msg);
+		log.info("====End Map Method====");
+		return new ResponseEntity<>(data, HttpStatus.OK);	
+	} // RestaurantMap End
+	// 시설지도 - 호텔 마킹
+	@RequestMapping(value="/hotelMap", method = {RequestMethod.GET})
+	@ResponseBody
+	@Override
+	public ResponseEntity<List<FacilityMap_P001_VO>> HotelMap(PlaceDTO dto) {
+		HttpHeaders responseHeaders = new HttpHeaders(); // 헤더변경 시 사용
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8"); 
+		log.info("====HOTEL Map Method====");
+		List<FacilityMap_P001_VO> data = service.getHotelMap(dto);
+		log.info(dto);
+		log.info(service);
+		String msg = "";
+		boolean status = data.isEmpty();
+		if (status) {
+			msg = "fail";
+		} else {
+			msg = "success";
+		}
+		log.info(msg);
+		log.info("====End Map Method====");
+		return new ResponseEntity<>(data, HttpStatus.OK);	
+	} // HotelMap End
 	// 시설지도 등록페이지 
+	@Override
 	@RequestMapping(value="/register", method = {RequestMethod.GET})
 	public void test(Model model) {
 		
@@ -128,6 +172,7 @@ public class FacilityMap_P001_ControllerImpl implements FacilityMap_P001_Control
 	}
 
 	// 시설지도 등록 Action
+	@Override
 	@RequestMapping(value="/register", method = {RequestMethod.POST})
 	public String registerAction(Model model, FacilityMap_P001_VO vo, MultipartHttpServletRequest uploadFile, RedirectAttributes rttr) {
 		log.info("========register 등록중====");
@@ -187,6 +232,7 @@ public class FacilityMap_P001_ControllerImpl implements FacilityMap_P001_Control
 		}
 		
 		// 상세페이지 리뷰 등록 Action
+		@Override
 		@RequestMapping(value= "/revregister", method = {RequestMethod.POST})
 		public String ReviewRegister (Model model, FacilityMap_P001_ReplyVO vo, MultipartHttpServletRequest uploadFile, RedirectAttributes rttr)  {
 			System.out.println("============Review write!!!!!");
@@ -227,6 +273,7 @@ public class FacilityMap_P001_ControllerImpl implements FacilityMap_P001_Control
 			log.info("사진 업로드 완료");
 			//---------------------------------------------------------------------------
 			log.info("==========================");
+			log.info("rev id : "+vo.getMember_id());
 			service.reviewregister(vo);
 			rttr.addFlashAttribute("result", vo.getSite_id());
 			model.addAttribute("url", "https://www.dingpet.shop/siteimg/");
@@ -237,6 +284,7 @@ public class FacilityMap_P001_ControllerImpl implements FacilityMap_P001_Control
 		} // ReviewRegister End
 		
 	// 시설지도 상세페이지 (병원,약국)
+	@Override
 	@RequestMapping("/infopage")
 	public void facilityinfo(@RequestParam("place_num") int place_num, Model model) {
 		System.out.println("==============  Map Info Page");
@@ -252,7 +300,13 @@ public class FacilityMap_P001_ControllerImpl implements FacilityMap_P001_Control
 		System.out.println("==============  Map Info Page");
 		model.addAttribute("infopage", "조회 페이지 입니다");
 		String site = String.valueOf(site_id);
-		model.addAttribute("star", Double.valueOf(service.getStarAvg(site)));
+		String star = service.getStarAvg(site);
+		if ( star == null || star == "") {
+			model.addAttribute("star","0");	
+		}else {
+			model.addAttribute("star", Double.valueOf(service.getStarAvg(site)));
+		}
+		
 		model.addAttribute("url", "https://www.dingpet.shop/siteimg/");
 		model.addAttribute("info", service.getDogPlace(site_id));
 		

@@ -10,7 +10,6 @@ function addnumber(size){
 	var price = '';
 	var small_total = 0;
 	var sum = parseInt($('.temp_price').val());
-	
 	var num = 0;
 	var maxnum = 0;
 	
@@ -37,7 +36,6 @@ function addnumber(size){
 			small_total = price;
 			
 			$('.temp_price').val(sum);
-			console.log(sum);
 
 			str += numberWithCommas(price);
 			str += ' 원 / 1시간';
@@ -65,7 +63,6 @@ function addnumber(size){
 			price *= num;
 			
 			$('.temp_price').val(sum);
-			console.log(sum)
 			
 			str += numberWithCommas(price);
 			str += ' 원 / 1시간';
@@ -95,8 +92,6 @@ function addnumber(size){
 			
 			$('.temp_price').val(sum);
 			
-			console.log(sum)
-			
 			str += numberWithCommas(price);
 			str += ' 원 / 1시간';
 			
@@ -114,7 +109,6 @@ function subnumber(size){
 	var str = '';
 	var price = '';
 	var sum = parseInt($('.temp_price').val());
-	
 	var num = '';
 	
 	if(size == 'small'){
@@ -133,8 +127,6 @@ function subnumber(size){
 			price *= num;
 			
 			$('.temp_price').val(sum);
-			
-			console.log(sum);
 			
 			str += numberWithCommas(price);
 			str += ' 원 / 1시간';
@@ -161,9 +153,6 @@ function subnumber(size){
 			
 			$('.temp_price').val(sum);
 			
-			
-			console.log(sum);
-			
 			str += numberWithCommas(price);
 			str += ' 원 / 1시간';
 			
@@ -189,8 +178,6 @@ function subnumber(size){
 			
 			$('.temp_price').val(sum);
 			
-			console.log(sum)
-			
 			str += numberWithCommas(price);
 			str += ' 원 / 1시간';
 			$('.price_text--large').empty(str);
@@ -209,7 +196,6 @@ function numberWithCommas(x){
 //---------------------------------------------------------------------------------
 
 // 예약 결제 팝업
-
 function reservation_Payment(){
 	
 	var popupX = (window.screen.width/2) - 250;
@@ -224,21 +210,16 @@ function reservation_Payment(){
 	frm.target ="payviewer";
 	frm.method ="post";
 	frm.submit();
-
 }
 
 function closedPopup(){
-	
-	opener.location.reload();
+	opener.location.href = "/petsitting/p002/reservationlist";
     window.close();
-	
 }
 
-	
 //----------------------------------------------------------------------------------
 
 // 시간
-
 	var timeClick = {
 		
 		// 예약 시간 DOM 설정
@@ -310,23 +291,29 @@ function closedPopup(){
 		// 예약 날짜, 시간 저장
 		timeSelect : function(event){
 			
+			if($(".num-small").text()=='0' && $(".num-medium").text()=='0' && $(".num-large").text()=='0'){
+				alert("맡기실 강아지를 먼저 선택해주세요")
+				return
+			}
+			
 			var time = $(event).val();
 	
 			if($(".startDate").val() != '' && $(".startTime").val() == ''){
 			// 시작시간 설정
-			
+				
 				$(".startTime").val(time);	// 시작시간 저장
-				console.log("시작시간 : " +$(".startTime").val() )
+				$(".start-date--text").empty();
+				$(".end-date--text").empty();
+				$(".start-date--text").text("시 작 : "+$(".startDate").val() +" "+ $(".startTime").val()+":00")
 				
 			}else if($(".startDate").val() == $(".endDate").val() && $(".startTime").val() >= time){
 			// 같은날에 시작시간보다 종료시간이 이를때
 			
-				console.log("종료시간이 잘못되었습니다");
 				$(".endDate").val('');		// 종료일 초기화
 				$(".startTime").val(time);	// 선택한시간을 시작시간으로 변경
-				console.log("시작날짜 : " + $(".startDate").val());
-				console.log("시작시간 : " + $(".startTime").val());
-				
+				$(".start-date--text").empty();
+				$(".start-date--text").text("시 작 : "+$(".startDate").val() +" "+ $(".startTime").val()+":00")
+
 			}else if($(".endDate").val() != '' && $(".endTime").val() == ''){
 			// 종료시간 설정
 				
@@ -335,16 +322,11 @@ function closedPopup(){
 				var total_time = parseInt($(".endTime").val() - $(".startTime").val());
 				var price = parseInt($(".temp_price").val());
 				
-				console.log("종료시간 : " +$(".endTime").val())
-				
-				console.log("총 예약 시간 : " + total_time)
-				//console.log("결제금액 : " + price)
-			
+				$(".end-date--text").text("종 료 : "+$(".endDate").val() +" "+ $(".endTime").val()+":00")
+
 				price *= total_time;
 				
-				
 				$(".total_amount--hidden").val(price);
-				console.log("총 결제금액 : " + $(".total_amount--hidden").val())
 				
 				var price2 = Math.floor(price/10);
 				var price1 = price-price2;
@@ -358,28 +340,23 @@ function closedPopup(){
 			}
 			
 			$('.dateTime').css('display', 'none');
-			
+			$('.calender-div').css('display', 'inline-block');
 		},
 		
 		// 예약시간 취소
 		reselect : function(){
 			
-			console.log("시작날짜 : " + $(".startDate").val());
-			console.log("시작시간 : " + $(".startTime").val());
-			
 			if($(".startDate").val() != '' && $(".startTime").val() == ''){
 				
 				$(".startDate").val('');	// 시작날짜 초기화
-				console.log("시작시간 취소")
 				
 			}else if($(".endDate").val() != '' && $(".endTime").val() == ''){
 				
 				$(".endDate").val('');		// 종료날짜 초기화
-				console.log("종료시간 취소")
 	
 			}
 			$('.dateTime').css('display', 'none');
-	
+			$('.calender-div').css('display', 'block');
 		}
 			
 	}
@@ -415,7 +392,6 @@ function closedPopup(){
 			event = null;
 			this.month = $(".CalendarMonth").val();
 			this.year = $(".CalendarYear").val();
-			//console.log("이건먼데 : " + this.month);
 
 			if(this.month == 12){
 				this.month = 0;
@@ -433,31 +409,30 @@ function closedPopup(){
 			
 		}else if(event == 'before'){
 				
-				event = null
-				this.month = $(".CalendarMonth").val();
-				this.year = $(".CalendarYear").val();
-				
-				if(this.month == 1){
-					this.month = 13;
-					this.year -= 1; 
-				}
-				
+			event = null
+			this.month = $(".CalendarMonth").val();
+			this.year = $(".CalendarYear").val();
 			
-				if(this.month == (new Date().getMonth())+1 && this.year == new Date().getFullYear()){
-					
-					this.month = (new Date().getMonth())+1;
-					
-				}else{		
-					this.month -= 1;			
-				}
+			if(this.month == 1){
+				this.month = 13;
+				this.year -= 1; 
+			}
+			
+		
+			if(this.month == (new Date().getMonth())+1 && this.year == new Date().getFullYear()){
 				
-				$(".CalendarMonth").val(this.addzero(this.month, 2));
-				$(".CalendarYear").val(this.year);
+				this.month = (new Date().getMonth())+1;
 				
-				// console.log(month);
+			}else{		
+				this.month -= 1;			
+			}
+			
+			$(".CalendarMonth").val(this.addzero(this.month, 2));
+			$(".CalendarYear").val(this.year);
+			
 
-					document.getElementsByClassName("CalendarMonth_small")[0].innerHTML = this.year + '년 ' + this.addzero(this.month, 2) +'월' ;
-					this.calendarDay(false);
+			document.getElementsByClassName("CalendarMonth_small")[0].innerHTML = this.year + '년 ' + this.addzero(this.month, 2) +'월' ;
+			this.calendarDay(false);
 
 		}else if(event == 'next2'){
 			
@@ -476,37 +451,36 @@ function closedPopup(){
 			$(".CalendarMonth1").val(this.addzero(this.month, 2));
 			$(".CalendarYear1").val(this.year);
 
-				document.getElementsByClassName("CalendarMonth_small1")[0].innerHTML = this.year + '년 ' + this.addzero(this.month, 2) +'월' ;
-				this.calendarDay(true);
+			document.getElementsByClassName("CalendarMonth_small1")[0].innerHTML = this.year + '년 ' + this.addzero(this.month, 2) +'월' ;
+			this.calendarDay(true);
 
 			
 		}else if(event == 'before2'){
-				
-				event = null
-				this.month = $(".CalendarMonth1").val();
-				this.year = $(".CalendarYear1").val();
-				
-				if(this.month == 1){
-					this.month = 13;
-					this.year -= 1; 
-				}
-				
 			
-				if(this.month == (new Date().getMonth())+1 && this.year == new Date().getFullYear()){
-					
-					this.month = (new Date().getMonth())+1;
-					
-				}else{		
-					this.month -= 1;			
-				}
-				
-				$(".CalendarMonth1").val(this.addzero(this.month, 2));
-				$(".CalendarYear1").val(this.year);
-				
-				// console.log(month);
+			event = null
+			this.month = $(".CalendarMonth1").val();
+			this.year = $(".CalendarYear1").val();
 			
-					document.getElementsByClassName("CalendarMonth_small1")[0].innerHTML = this.year + '년 ' + this.addzero(this.month, 2) +'월' ;
-					this.calendarDay(true);
+			if(this.month == 1){
+				this.month = 13;
+				this.year -= 1; 
+			}
+			
+		
+			if(this.month == (new Date().getMonth())+1 && this.year == new Date().getFullYear()){
+				
+				this.month = (new Date().getMonth())+1;
+				
+			}else{		
+				this.month -= 1;			
+			}
+			
+			$(".CalendarMonth1").val(this.addzero(this.month, 2));
+			$(".CalendarYear1").val(this.year);
+			
+		
+			document.getElementsByClassName("CalendarMonth_small1")[0].innerHTML = this.year + '년 ' + this.addzero(this.month, 2) +'월' ;
+			this.calendarDay(true);
 
 		}
 	},
@@ -648,12 +622,16 @@ function closedPopup(){
 	
 	dateSelect : function(event){
 		
+		if($(".num-small").text()=='0' && $(".num-medium").text()=='0' && $(".num-large").text()=='0'){
+			alert("맡기실 강아지를 먼저 선택해주세요")
+			return
+		}
+		
 		var date = $(event).val();
 		
 		if($(".startDate").val() == ''){
 			
 			$(".startDate").val(date);	// 시작날짜 설정
-			console.log("시작날짜 : "+$(".startDate").val());
 			
 		}else if($(".startDate").val() > date){
 		// 시작날짜보다 종료날짜가 이를 때
@@ -661,15 +639,10 @@ function closedPopup(){
 			$(".startDate").val(date);	// 시작날짜에 다시 저장
 			$(".startTime").val('');	// 시작시간 초기화
 			
-			console.log("종료날짜를 잘못 입력");
-			console.log("시작날짜 : "+$(".startDate").val());
-			
-			
 		}else if($(".startDate").val() != '' && $(".endDate").val() == ''){
 		// 종료날짜 설정
 		
 			$(".endDate").val(date);	// 종료날짜 저장
-			console.log("종료날짜 : "+$(".endDate").val());
 			
 		}else if($(".startTime").val() != '' && $(".endTime").val() != ''){
 		// 시작날짜, 시간, 종료날짜, 시간 모두 저장 되어있을 때
@@ -678,11 +651,8 @@ function closedPopup(){
 			$(".startTime").val('');	// 시작시간 초기화
 			$(".endDate").val('');		// 종료날짜 초기화
 			$(".endTime").val('');		// 종료시간 초기화
-			console.log("일정취소" )
-			console.log("시작날짜 : "+$(".startDate").val() )
-
 		}
-		
+		$(".calender-div").css('display', 'none')
 		$(".dateTime").css('display', 'inline-block')
 
 	},
@@ -704,7 +674,6 @@ function closedPopup(){
 			zero += num;
 			return zero;
 		}
-		
 	},
 }
 

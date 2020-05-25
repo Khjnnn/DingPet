@@ -5,7 +5,7 @@
 <%@include file="../../includes/header.jsp"%>
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profilelookup.css?v=3">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profilelookup.css?v=5">
 
 <!--====  str of contents  ====-->
     <section style="padding-top:87px">
@@ -20,7 +20,7 @@
 						</div>
 						<!-- 프로필 자기소개 한줄 -->
 						<div class="profile_h6Div-reservation" align="center">
-							<h6 class="profile_h6-reservation">${profile.profile_Content }</h6>
+							<h6 class="profile_h6-reservation">${profile.profile_Title }</h6>
 						</div>
 						<div>
 							<!-- 이용가능서비스 -->
@@ -153,7 +153,11 @@
 					</div>
 				</div>
 				<div class="schedule-reservation">
-					<div class='Calendar-reservation pt-5'>	
+					<div class='Calendar-reservation pt-5'>
+						<div class="reserved-date--text">
+							<h4 class="start-date--text"></h4>
+							<h4 class="end-date--text"></h4>
+						</div>	
 						<div class="dateTime">
 							<div class="dateTime-text">
 								<button type="button" onclick="timeClick.reselect()">뒤로</button>
@@ -175,26 +179,27 @@
 							</c:forEach>
 						</div>							
 						<!-- <        > -->
-						<div align='center' class="CalendarMonth">
-							<img width="35px" class="imgbtn" onclick="calendar.calendarYearMonth('before')" src="/resources/images/petsitting/calendar_before.png">
-							<h3 class='CalendarMonth_small'></h3>
-							
-							<img width="35px" class="imgbtn" onclick="calendar.calendarYearMonth('next')" src="/resources/images/petsitting/calendar_next.png">
-						</div>
-						
-							
-						<div align='center' class="DayOfTheWeek">
-							<ul class="DayOfTheWeek_ui">
-								<li class="DayOfTheWeek_li"><small>일</small></li>
-								<li class="DayOfTheWeek_li"><small>월</small></li>
-								<li class="DayOfTheWeek_li"><small>화</small></li>
-								<li class="DayOfTheWeek_li"><small>수</small></li>
-								<li class="DayOfTheWeek_li"><small>목</small></li>
-								<li class="DayOfTheWeek_li"><small>금</small></li>
-								<li class="DayOfTheWeek_li"><small>토</small></li>
-							</ul>
-						</div>
+						<div class="calender-div">
+							<div align='center' class="CalendarMonth">
+								<img width="35px" class="imgbtn" onclick="calendar.calendarYearMonth('before')" src="/resources/images/petsitting/calendar_before.png">
+								<h3 class='CalendarMonth_small'></h3>
+								
+								<img width="35px" class="imgbtn" onclick="calendar.calendarYearMonth('next')" src="/resources/images/petsitting/calendar_next.png">
+							</div>
+								
+							<div align='center' class="DayOfTheWeek">
+								<ul class="DayOfTheWeek_ui">
+									<li class="DayOfTheWeek_li"><small>일</small></li>
+									<li class="DayOfTheWeek_li"><small>월</small></li>
+									<li class="DayOfTheWeek_li"><small>화</small></li>
+									<li class="DayOfTheWeek_li"><small>수</small></li>
+									<li class="DayOfTheWeek_li"><small>목</small></li>
+									<li class="DayOfTheWeek_li"><small>금</small></li>
+									<li class="DayOfTheWeek_li"><small>토</small></li>
+								</ul>
+							</div>
 						<div align='center' class='CalendarDayDiv'></div>
+						</div>
 						<div id="askldlka">
 						
 						</div>
@@ -222,7 +227,7 @@
 					</svg>
 					
 					<span class="bubblebtn--bubble__container">
-					  <input type='submit' onclick="reservation_Payment()" class="bubblebtn bubblebtn--bubble" value="Hover me">
+					  <input type='submit' onclick="reservation_Payment()" class="bubblebtn bubblebtn--bubble" value="예 약">
 					  <span class="bubblebtn--bubble__effect-container">
 					    <span class="circle top-left"></span>
 					    <span class="circle top-left"></span>
@@ -251,14 +256,14 @@
 				</form>
 				
 			</div>
-			<div class="backbtn">
+			<div class="backbtn" align="center">
 				<button type="button" onclick="reservation()" class="btn btn-secondary">
 					<p class="reservtext">X</p>
 				</button>
 			</div>
 		</div>
     
-        <div class="page-header header-filter" data-parallax="true" style="background-image: url('/resources/images/background/homepage-top.png'); transform: translate3d(0px, 0px, 0px);"></div>
+        <div class="page-header header-filter" data-parallax="true" style="background-image: url('/resources/images/background/beagle_dog_running992831.jpg'); transform: translate3d(0px, 0px, 0px);"></div>
         
         <div class="main main-raised">
             <div class="profile-content">
@@ -266,19 +271,31 @@
                     <div class="row">
                         <div class="col-md-6 ml-auto mr-auto" style='left: 13%'>
                           <div class="profile">
-                                <div class="avatar text-center">
-                                    <img src="/resources/images/dogger_img_big_1.jpg" alt="Circle Image" class="img-raised rounded-circle img-fluid">
+                                <div class="avatar text-center" style="height: 120px;">
+                                    <img src="https://www.dingpet.shop/img/${profile.profile_PicName }" alt="Circle Image" class="img-raised rounded-circle img-fluid">
                                 </div>
-                                <div class="name text-center">
+                                <div class="wrap-star">
+							   		<div class='star-rating'>
+								   		<c:set var="starper" value="${profile.profile_Star*20}%" />
+					    		   		<span style ="width:${profile.profile_Star*20}%"></span>
+				    				</div>        
+				    				<span style="position: right; margin: 0px;">${profile.profile_Star}/5.0</span>	
+								</div>
+                                <div class="name text-center" style="margin-top: -10px;">
                                     <h4 class="title">${profile.member_NickName }</h4>
-                                    <h6>한줄소개</h6>
+                                    <h6>${profile.profile_Title }</h6>
                                 </div>
                            </div>
                         </div>
                         <div class="btn_div" style="height:65px">
 							<ul class="list-inline text-center">
 								<li class="list-inline-item" style="padding: 0.5rem; margin: 0;">
-									<a href="#" class="btn btn-primary">문의하기</a>
+									<form action="../../chat/createRoom" method="post" >
+		   								<input type='hidden' name='room_owner' id='room_owner' value='${customers.member_id }' />    
+		   								<input type="hidden" name="roomName" id="roomName" value="예약 문의 합니다"/>
+		   								<input type="hidden" name="roomMember" id="roomMember" value='${profile.member_ID }'/>
+	      								<button type='submit' class="btn btn-primary">문의하기</button>
+	      							</form>
 								</li>
 								<li class="list-inline-item" style="padding: 0.5rem;">
 									<button type="button" onclick="reservation()" class="btn btn-secondary"><p class="reservtext">예약하기</p></button>
@@ -494,19 +511,26 @@
 						</div>
 						<div class="licenseContainer" align="center">
 							<div class="licenseDiv">
+							<c:forEach items="${license }" var="license">
+								<c:if test="${license.license_PicPath != null}">
+								<div class="licensePic">
+									<img width="150px" src="https://www.dingpet.shop/img/${license.license_PicPath }">
+								</div>
+								</c:if>
+								<c:if test="${license.license_PicPath == null}">
 								<div class="licensePic">
 									<img width="150px" src="/resources/images/dogger_veterinary.svg">
 								</div>
+								</c:if>
 								<div class="licenseDetail">
-									<c:forEach items="${license }" var="license">
-										<p class="license_txth1" align="left">자 격 증 명</p>
-										<p class="license_txth2" align="left">${license.license_Name }</p>
-										<p class="license_txth1" align="left">발 급 일 자</p>
-										<p class="license_txth2" align="left">${license.license_Date }</p>
-										<p class="license_txth1" align="left">발 급 기 관</p>
-										<p class="license_txth2" align="left">${license.license_Agency }</p>
-									</c:forEach>
+									<p class="license_txth1" align="left">자 격 증 명</p>
+									<p class="license_txth2" align="left">${license.license_Name }</p>
+									<p class="license_txth1" align="left">발 급 일 자</p>
+									<p class="license_txth2" align="left">${license.license_Date }</p>
+									<p class="license_txth1" align="left">발 급 기 관</p>
+									<p class="license_txth2" align="left">${license.license_Agency }</p>
 								</div>
+							</c:forEach>
 							</div>
 						</div>
                     </div>
@@ -526,7 +550,7 @@
                             </div>
                           </div>
                           <div class="row no-gutters">
-                            
+							<!-- 
                               <a class="col-6 col-md-6 col-lg-4 col-xl-3 gal-item d-block" data-aos="fade-up" data-aos-delay="100" href="/resources/images/dogger_img_sm_1.jpg" data-fancybox="gal"><img src="/resources/images/dogger_img_sm_1.jpg" alt="Image" class="img-fluid"></a>
                               <a class="col-6 col-md-6 col-lg-4 col-xl-3 gal-item d-block" data-aos="fade-up" data-aos-delay="100" href="/resources/images/dogger_img_sm_2.jpg" data-fancybox="gal"><img src="/resources/images/dogger_img_sm_2.jpg" alt="Image" class="img-fluid"></a>
                               <a class="col-6 col-md-6 col-lg-4 col-xl-3 gal-item d-block" data-aos="fade-up" data-aos-delay="100" href="/resources/images/dogger_img_sm_3.jpg" data-fancybox="gal"><img src="/resources/images/dogger_img_sm_3.jpg" alt="Image" class="img-fluid"></a>
@@ -535,6 +559,10 @@
                               <a class="col-6 col-md-6 col-lg-4 col-xl-3 gal-item d-block" data-aos="fade-up" data-aos-delay="100" href="/resources/images/dogger_img_sm_6.jpg" data-fancybox="gal"><img src="/resources/images/dogger_img_sm_6.jpg" alt="Image" class="img-fluid"></a>
                               <a class="col-6 col-md-6 col-lg-4 col-xl-3 gal-item d-block" data-aos="fade-up" data-aos-delay="100" href="/resources/images/dogger_img_sm_1.jpg" data-fancybox="gal"><img src="/resources/images/dogger_img_sm_1.jpg" alt="Image" class="img-fluid"></a>
                               <a class="col-6 col-md-6 col-lg-4 col-xl-3 gal-item d-block" data-aos="fade-up" data-aos-delay="100" href="/resources/images/dogger_img_sm_2.jpg" data-fancybox="gal"><img src="/resources/images/dogger_img_sm_2.jpg" alt="Image" class="img-fluid"></a>
+                           -->
+                           <c:forEach items="${gallery }" var="gallery">
+								<a class="col-6 col-md-6 col-lg-4 col-xl-3 gal-item d-block" data-aos="fade-up" data-aos-delay="100" href="https://www.dingpet.shop/img/${gallery.act_Photo }" data-fancybox="gal"><img src="https://www.dingpet.shop/img/${gallery.act_Photo }" alt="Image" class="img-fluid"></a>
+                           </c:forEach>
                           </div>
                         </div>
                       </section>
@@ -542,12 +570,29 @@
                     <!--====  End of Gallery  ====-->
                     <!--== start review ==-->
                     <div class="testimonials-wrap">
-                        <div class="container">
+                        <div class="container container--review">
                             <div class="heading-section">
                                 <span class="sub-heading">R E V I E W</span>
                                 <h2>펫시터 이용 후기</h2>
                             </div>
                             <div class="carousel-testimonial owl-carousel">
+                            	<c:forEach var="reviewlist" items="${review }">
+                            	 	<div class="item">
+                            	 	    <input type="hidden" class="exist" value="Y">
+                            	 	
+	                            		<div class="testimonial-box d-flex" style="min-height: 215px;">
+	                                        <div class="user-img" style="background-image: url(https://www.dingpet.shop/img/${reviewlist.member_photo})">
+	                                        </div>
+	                                        <div class="text pl-4">
+	                                            <span class="quote"><i class="fa fa-quote-left"></i></span>
+	                                            <p class="review-content">${reviewlist.review_Content }</p>
+	                                            <p class="name">${reviewlist.member_Nickname }</p>
+	                                            <span class="position">${reviewlist_review_Star }</span>
+	                                        </div>
+	                                    </div>
+                                    </div>
+                            	</c:forEach>
+                            	<!-- 
                                 <div class="item">
                                     <div class="testimonial-box d-flex">
                                         <div class="user-img" style="background-image: url(https://randomuser.me/api/portraits/men/82.jpg)">
@@ -684,6 +729,7 @@
                             
                         </div>
                     </div>   
+                    -->
                     <!--== end review ==-->  
                 </div>
             </div>
@@ -755,8 +801,12 @@ $('.bubblebtn--bubble').each(function() {
 	  $(this).on('mouseover', function() {
 	    btTl.restart();
 	  });
-	});
-
+});
+	
+	if($(".exist").val() != 'Y'){
+		$(".container--review").append("<h2 align='center' style='display:block'>아직 등록된 리뷰가 없습니다.</h2>");
+	}
+	
 </script>
 
 

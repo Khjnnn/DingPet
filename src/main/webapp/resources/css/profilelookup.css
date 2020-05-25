@@ -1,4 +1,24 @@
 @charset "UTF-8";
+.wrap-star{
+	text-align: center;
+    position: relative;
+    left: 4.5%;
+}
+.star-rating {
+	width:150px;
+    text-align: left;
+}
+.star-rating,.star-rating span {
+	display:inline-block; 
+	height:26px; 
+	overflow:hidden; 
+	background:url(/resources/images/bigstar.png)no-repeat; 
+}
+.star-rating span{
+	background-position:left bottom; 
+	line-height:0;
+	vertical-align:top; 
+}
 
 .DayOfTheWeek_li {
 	display: inline-block;
@@ -221,8 +241,8 @@
 	position: absolute;
 	background-color: white;
 	z-index: 100;
-	border-top: lightgoldenrodyellow solid 2px;
-	border-bottom: lightgoldenrodyellow solid 2px;
+	border-top: #6c757d solid 2px;
+	border-bottom: #6c757d solid 2px;
 }
 
 .profile-reservation {
@@ -299,7 +319,7 @@
 }
 
 .Calendar-reservation {
-	
+	padding-top: 2rem !important;
 }
 
 .btn-reservation {
@@ -344,11 +364,35 @@
 	text-align: center;
 	padding: 0px;
 }
+.reserved-date--text{
+	margin-bottom: 10px;
+}
+.start-date--text, .end-date--text{
+	margin: 0px;
+    font-size: 15px;
+    display: inline-block;
+    width: 49%;
+    text-align: center;
+}
 
 .reservtext {
 	margin: 0px;
 }
 
+.owl-prev, .owl-next{
+	padding: 20px;
+    display: inline-block;
+}
+
+.backbtn{
+	position: relative;
+    top: 20px;
+}
+
+
+.review-content{
+	word-break: break-all;
+}
 
 /* 예약 버튼 css */
 

@@ -1,26 +1,35 @@
 package com.dingpet.chat.p001.vo;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ChatRoom {
 
 	private int roomNo;
 	private String roomName;
-	private String owner;
+	private String room_owner;
 	private char del_flag;
 	private String roomMember;
+	private String roomType;
+	private String roomPw;
 	private Date reg_date;
+	private String anick;
+	private String bnick;
 
+	public String getAnick() {
+		return anick;
+	}
+
+	public void setAnick(String anick) {
+		this.anick = anick;
+	}
+
+	public String getBnick() {
+		return bnick;
+	}
+
+	public void setBnick(String bnick) {
+		this.bnick = bnick;
+	}
 
 	public int getRoomNo() {
 		return roomNo;
@@ -38,12 +47,14 @@ public class ChatRoom {
 		this.roomName = roomName;
 	}
 
-	public String getOwner() {
-		return owner;
+
+
+	public String getRoom_owner() {
+		return room_owner;
 	}
 
-	public void setOwner(String owner) {
-		this.owner = owner;
+	public void setRoom_owner(String room_owner) {
+		this.room_owner = room_owner;
 	}
 
 	public char getDel_flag() {
@@ -61,10 +72,28 @@ public class ChatRoom {
 	public void setRoomMember(String roomMember) {
 		this.roomMember = roomMember;
 	}
+
+	public String getRoomType() {
+		return roomType;
+	}
+
+	public void setRoomType(String roomType) {
+		this.roomType = roomType;
+	}
+
+	public String getRoomPw() {
+		return roomPw;
+	}
+
+	public void setRoomPw(String roomPw) {
+		this.roomPw = roomPw;
+	}
+
 	@Override
 	public String toString() {
-		return "ChatRoom [roomNo=" + roomNo + ", roomName=" + roomName + ", owner=" + owner + ", del_flag=" + del_flag
-				+ ", roomMember=" + roomMember + ", reg_date=" + reg_date + "]";
+		return "ChatRoom [roomNo=" + roomNo + ", roomName=" + roomName + ", owner=" + room_owner + ", del_flag=" + del_flag
+				+ ", roomMember=" + roomMember + ", roomType=" + roomType + ", roomPw=" + roomPw + ", reg_date="
+				+ reg_date + "]";
 	}
 
 	public Date getReg_date() {

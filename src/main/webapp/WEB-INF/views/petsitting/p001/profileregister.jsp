@@ -70,8 +70,6 @@
 					$(".CalendarMonth").val(this.month);
 					$(".CalendarYear").val(this.year);
 					
-					//console.log(month);
-					
 					document.getElementsByClassName("CalendarMonth_small")[0].innerHTML = this.year + '년 ' + this.addzero(this.month, 2) +'월' ;
 					this.calendarDay();
 			}
@@ -161,7 +159,6 @@
 					this.closed.splice(i, 1);
 					
 					$(click).css('background-color', 'white');
-					console.log($(click).val())
 					this.cancel = true;			// 휴무일이 저장되어있는 배열안에 클릭날짜와 같은 데이터가 있었다
 				}
 				
@@ -170,18 +167,15 @@
 			if(!this.cancel){					// 휴무일이 저장되어있는 배열안에 클릭날짜와 같은 데이터가 없을 때
 				this.closed.push(closeddate);	// 휴무일 추가
 				$(click).css('background-color', 'black');
-				console.log($(click).val())
 			}
 			
-			console.log(this.closed.length);
-			console.log(this.closed);
-		
 		},
 		
 		closedSave: function(){
 			
 			var savestr ="<div class='closed--savedDiv'>";
 			var jsonstr = '{"closed":[';
+			
 			
 			this.closed.sort();
 			
@@ -204,14 +198,6 @@
 			savestr += "</div><div class='closed-saved--text'><h3 class='closed-saved-h3'>휴무일이 저장되었습니다.</h3></div>"
 			jsonstr	+= ']}';
 			
-			console.log(jsonstr);
-			/*
-			var jsonparse = JSON.parse(jsonstr);
-			
-			console.log(jsonparse);
-			
-			$(".closedSave").val(jsonparse);
-			*/
 			$(".closedDiv").empty();
 			$(".closedDiv").append(savestr);	// 뷰 출력용 문자열
 			$(".closedSave").val(jsonstr);		// json 문자열
@@ -295,7 +281,6 @@
 									</script>
 								</div>
 								
-								
 								<div class="form-group">
 									<div class='profile-info-titleDiv'>
 										<h5 class="profile-info-title">한줄 소개 * </h5>
@@ -324,12 +309,8 @@
 													$(".bytesRemain").empty();
 													$(".bytesRemain").append(str);
 													$(".bytesRemain").css('color', 'indianred');
-											
 												}
-												
-
 											})
-											
 										});
 									</script>
 									
@@ -438,7 +419,6 @@
 								            </div>
 										</td>
 									</tr>
-		
 									<tr>
 										<td>
 											<div class="media media-testimonial">
@@ -714,8 +694,6 @@
 									alert("같은 이름의 파일이 이미 존재합니다.")
 								}
 								
-								console.log(gallery_files);
-								
 							})
 							
 							function deleteImageAction(index, filename){
@@ -733,8 +711,6 @@
 								var img_id = "#img_id_"+index;	// 삭제할 태그 id 
 								$(img_id).remove();				// 삭제
 								
-								console.log(gallery_files.length)
-								
 								if(gallery_files.length == 0){
 									var str = "<h3 align='center'>등록된 사진이 아직 없습니다.</h3>"
 									$(".photo-gallery--preview").append(str)
@@ -742,7 +718,7 @@
 								
 							}
 							
-						//--------------------------데이터 POST 전송 AJAX --------------------
+					//--------------------------데이터 POST 전송 AJAX----------------------------
 							
 							function formsubmit(){
 							
@@ -757,7 +733,7 @@
 								
 								$.ajax({
 									type : "POST",
-									url : "/petsitting/p001/filessaved",
+									url : '/petsitting/p001/filessaved',
 									data : formData,
 									processData: false,
 									contentType: false,

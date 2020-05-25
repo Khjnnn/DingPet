@@ -2,11 +2,12 @@ package com.dingpet.petsitting.p001.service;
 
 import java.util.List;
 
-import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import com.dingpet.petsitting.p001.mapper.PetSitting_P001_Mapper;
+import com.dingpet.petsitting.p001.vo.MultiPhotoVO;
 import com.dingpet.petsitting.p001.vo.PetSitting_P001_VO;
+import com.dingpet.petsitting.p004.vo.PetSitting_P004_VO;
 
 import lombok.AllArgsConstructor;
 
@@ -42,12 +43,6 @@ public class PetSitting_P001_ServiceImple implements PetSitting_P001_Service{
 	}
 
 	@Override
-	public void albumInsert(PetSitting_P001_VO profile) {
-		// TODO Auto-generated method stub
-		mapper.albumInsert(profile);
-	}
-
-	@Override
 	public void closedInsert(PetSitting_P001_VO profile) {
 		// TODO Auto-generated method stub
 		mapper.closedInsert(profile);
@@ -69,6 +64,30 @@ public class PetSitting_P001_ServiceImple implements PetSitting_P001_Service{
 	public List<PetSitting_P001_VO> getLicenseList(PetSitting_P001_VO profile) {
 		// TODO Auto-generated method stub
 		return mapper.getLicenseList(profile);
+	}
+
+	@Override
+	public List<PetSitting_P004_VO> getReview(PetSitting_P001_VO profile) {
+		// TODO Auto-generated method stub
+		return mapper.getReview(profile);
+	}
+
+	@Override
+	public int getProfileIDSequence() {
+		// TODO Auto-generated method stub
+		return mapper.getProfileIDSequence();
+	}
+
+	@Override
+	public void setMultiPhoto(MultiPhotoVO mpvo) {
+		// TODO Auto-generated method stub
+		mapper.setMultiPhoto(mpvo);
+	}
+
+	@Override
+	public List<MultiPhotoVO> getMultiPhoto(PetSitting_P001_VO profile) {
+		// TODO Auto-generated method stub
+		return mapper.getMultiPhoto(profile);
 	}
 
 	

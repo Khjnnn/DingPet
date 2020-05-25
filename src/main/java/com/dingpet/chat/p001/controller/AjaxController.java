@@ -31,14 +31,10 @@ public class AjaxController {
 	      
 	      // 멤버 인원수 구하기
 	      if(members == null) {
-	    	  System.out.println("멤버가널인데?");
+	    	  System.out.println("멤버가 널");
 	      }
 	      
-	      if (members.startsWith(",")) {
-	         members = members.replaceFirst(",", "");
-	      }
-	      
-	      return members.split(",").length;
+	      return 1;
 	   }
 		
 	 @RequestMapping(value = "/memberOut", method = RequestMethod.GET)
@@ -49,6 +45,12 @@ public class AjaxController {
 		 
 		 return data;
 	 }
-	 
+
+	 @RequestMapping(value = "/updatePw", method = RequestMethod.GET)
+	 public int updatePw(int roomNo, String newPass) throws Exception {
+	  
+		   
+	      return  service.removeRoom(roomNo, newPass);
+	  } 
  
 }

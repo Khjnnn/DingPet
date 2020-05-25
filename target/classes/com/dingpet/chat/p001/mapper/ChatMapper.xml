@@ -2,28 +2,45 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.dingpet.chat.p001.mapper.ChatMapper">
 <!-- 회원가입 -->
- <insert id="createRoom">
-      insert into chatRoom (roomName, owner, roomMember, roomType, roomPw)
-      values (#{roomName}, #{owner}, #{roomMember}, #{roomType}, #{roomPw})
+<insert id="saveMessage">
+      insert into Message (message_id, sender, send_date, roomno, member, message)
+      values (msg_SEQ.nextval, #{sender, jdbcType=VARCHAR}, #{chatdate, jdbcType=VARCHAR}, #{roomno, jdbcType=VARCHAR},#{member, jdbcType=VARCHAR} , #{message, jdbcType=VARCHAR})
  </insert>
- 
+  <select id="getRoomMessage" resultType="com.dingpet.chat.p001.vo.Message">
+     select * from (select rownum rn,message_id , sender,send_date,roomno,message from message order by message_id asc) where roomno = #{roomno,jdbcType=VARCHAR}
+  </select>
+<insert id="createRoom">
+      insert into chatRoom (roomNo, roomName, room_owner, roomMember, roomType, roomPw)
+      values (room_SEQ.currval, #{roomName, jdbcType=VARCHAR}, #{room_owner, jdbcType=VARCHAR}, #{roomMember, jdbcType=VARCHAR}, #{roomType}, #{roomPw, jdbcType=VARCHAR})
+ </insert>
+  <select id="getChatRoomNo" resultType="int">
+     select room_SEQ.nextval as roomNo from dual
+  </select>
   <select id="listChatRoom" resultType="com.dingpet.chat.p001.vo.ChatRoom">
-     select * from chatRoom order by reg_date DESC limit #{pageStart}, #{perPageNum}
+    select o.roomno, o.roomname, o.room_owner, o.roommember, o.roomtype, o.reg_date, o.roompw, m2.member_nickname as anick, o.member_nickname as bnick 
+	from (select c.roomno, c.roomname, c.room_owner, c.roommember, c.roomtype, c.reg_date, c.roompw, m.member_nickname from chatRoom c LEFT OUTER JOIN member m ON c.roommember=m.member_id) o LEFT OUTER JOIN
+	member m2 ON o.room_owner = m2.member_id 
+	where o.room_owner =  #{newOwner, jdbcType=VARCHAR} OR o.roommember = #{newOwner, jdbcType=VARCHAR} order by o.reg_date DESC 
   </select>
   
-  <select id="countRoom" resultType="int">
-  	select count(*) from chatRoom;
+  <select id="getTotalRoomNum" resultType="int">
+  	select count(*) from chatRoom
   </select>
+  
+  <delete id="removeRoom">
+  	delete from chatRoom where roomNo = #{roomNo}
+  </delete>
   
   <select id="getRoom" resultType="com.dingpet.chat.p001.vo.ChatRoom">
-  	select * from chatRoom where roomNo = #{roomNo}
+  	select o.roomno, o.roomname, o.room_owner, o.roommember, o.roomtype, o.reg_date, o.roompw, m2.member_nickname as anick, o.member_nickname as bnick 
+	from (select c.roomno, c.roomname, c.room_owner, c.roommember, c.roomtype, c.reg_date, c.roompw, m.member_nickname from chatRoom c LEFT OUTER JOIN member m ON c.roommember=m.member_id) o LEFT OUTER JOIN
+	member m2 ON o.room_owner = m2.member_id where roomNo = #{roomNo}
   </select>
   
-  <select id="getRoomByOwner" resultType="com.dingpet.chat.p001.vo.ChatRoom">
-  	select * from chatRoom where owner = #{owner}
+  <select id="getRoomByOwner" resultType="com.dingpet.chat.p001.vo.ChatRoom" parameterType="com.dingpet.chat.p001.vo.ChatRoom">
+  	select * from chatRoom where room_owner = #{room_owner, jdbcType=VARCHAR} AND roomName = #{roomName, jdbcType=VARCHAR} AND roomNo = #{roomNo, jdbcType=VARCHAR}
   </select>
   
   <select id="getMembers" resultType="String">
@@ -34,7 +51,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	update chatRoom set roomMember = #{members} where roomNo = ${roomNo}
   </update>
   
-  <select id="getType" resultType="String">
+  <update id="updateOwner">
+      update chatRoom set room_owner = #{newOwner} where roomNo = ${roomNo}
+   </update>
+   
+  <select id="getOwner" resultType="String"><!-- 방장체크 -->
+     select room_owner from chatRoom where roomNo = #{roomNo} 
+  </select>
+  
+  <select id="getRoomType" resultType="String">
   	select roomType from chatRoom where roomNo = #{roomNo}
   </select>
  
@@ -42,19 +67,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	update chatRoom set roomType = #{roomType} where roomNo = ${roomNo}
   </update> 
  
-  <delete id="removeRoom">
-  	delete from chatRoom where roomNo = #{roomNo}
-  </delete>
   
-  <select id="getOwner" resultType="String"><!-- 방장체크 -->
-     select owner from chatRoom where roomNo = #{roomNo} 
-  </select>
   
-  <update id="updatePass">
-     update chatRoom set roomPw = #{newPass} where roomNo = ${roomNo}
-  </update>
-  
-  <update id="updateOwner">
-      update chatRoom set owner = #{newOwner} where roomNo = ${roomNo}
-   </update>
 </mapper>
